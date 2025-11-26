@@ -1,0 +1,20 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+*.xlsx*
+*.csv
+*.html
+
+# mypy python executable config
+mypy.ini
+
+# macOS directory info files
+.DS_Store
+
+# environment files
+.env

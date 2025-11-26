@@ -1,0 +1,9 @@
+services:
+  template-dev:
+    image:
+      ${IMAGE_NAME}:${IMAGE_VERSION}
+    build:
+      context: ../
+      dockerfile: dev.Dockerfile
+      args:
+        - USER_NAME=$USER_NAME
