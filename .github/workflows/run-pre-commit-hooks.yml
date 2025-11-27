@@ -133,7 +133,6 @@ jobs:
         PYTHON_PATH=$(poetry run which python)
         cat > mypy.ini << EOF
         [mypy]
-        explicit_base_packages = true
         python_executable = $PYTHON_PATH
         EOF
         echo "Generated mypy.ini with python_executable=$PYTHON_PATH"
