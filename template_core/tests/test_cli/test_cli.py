@@ -1,4 +1,5 @@
 from click.testing import CliRunner
+
 from template_core.cli import hello_world, main
 
 
