@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "template_core"
 version = "0.0.0"
-description = ""
+description = "Core functionality for the template project."
 authors = ["Jack HJ Fission <jackhjfission@gmail.com>"]
 readme = "README.md"
 
@@ -11,7 +11,7 @@ click = "^8.0"
 template_tools = { path = "../template_tools/", develop = true }
 
 [tool.poetry.scripts]
-template = "template_core.cli:main"
+template-core = "template_core.cli:main"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
