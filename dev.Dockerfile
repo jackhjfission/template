@@ -30,7 +30,7 @@ RUN pipx install pre-commit
 # this makes a throw-away git repo to encourage pre-commit
 # to install hooks
 RUN cd /home/${USER_NAME} && mkdir fake-repo
-COPY /.pre-commit-config.yaml /home/${USER_NAME}/fake-repo
+COPY /.devcontainer/.pre-commit-config.yaml /home/${USER_NAME}/fake-repo
 RUN cd /home/${USER_NAME}/fake-repo && \
     git init && \
     pre-commit install --install-hooks && \
