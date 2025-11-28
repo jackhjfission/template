@@ -33,33 +33,10 @@ This project uses a DevContainer to provide a consistent, fully-configured devel
    - When prompted, click "Reopen in Container" (or use Command Palette: `Dev Containers: Reopen in Container`)
    - The container will start automatically
 
-4. **Generate mypy configuration files**
-   
-   Each package requires a `mypy.ini` file that points to its Poetry Python environment. These files are gitignored and must be created locally:
-   
-   ```bash
-   # For template_core
-   cd template_core
-   cat > mypy.ini << EOF
-   [mypy]
-   python_executable = $(poetry run which python)
-   EOF
-   cd ..
-   
-   # For template_tools
-   cd template_tools
-   cat > mypy.ini << EOF
-   [mypy]
-   python_executable = $(poetry run which python)
-   EOF
-   cd ..
-   ```
-   
-   **Note:** The devcontainer startup script automatically installs Poetry dependencies, so these files can be generated immediately after the container starts. Without these files, mypy will fail during pre-commit checks.
-
-5. **Start developing!**
+4. **Start developing!**
    - All dependencies are automatically installed on container startup
    - Pre-commit hooks are automatically configured
+   - **mypy.ini files are automatically generated** for each package
    - Your SSH keys are mounted for git operations
 
 ### DevContainer Features
