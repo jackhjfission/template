@@ -36,6 +36,7 @@ EXCLUDE_PATTERNS = {
     ".venv",
     "venv",
     "poetry.lock",
+    "mypy.ini",  # Generated file, should not be in template
     "cookiecutter-output",
     "generate_cookiecutter.py",
     "COOKIECUTTER_README.md",  # Cookiecutter documentation
@@ -80,11 +81,30 @@ DIRECTORY_RENAMES = {
 def should_exclude(path: Path) -> bool:
     """Check if a path should be excluded from copying."""
     path_str = str(path)
+    
+    # First priority: Always exclude .git directory (but not .github)
+    if path.name == ".git" and path.is_dir():
+        return True
+    # Also exclude any files/dirs inside .git
+    if ".git" in path.parts and path.parts[path.parts.index(".git") + 1:]:
+        # This means .git is in the path and there are parts after it (we're inside .git)
+        return True
+    
+    # Special case: in scratchpads directories, only keep .gitignore files
+    if "scratchpads" in path.parts and path.is_file():
+        if path.name == ".gitignore":
+            return False  # Keep .gitignore in scratchpads
+        else:
+            return True  # Exclude all other files
+    
     for pattern in EXCLUDE_PATTERNS:
-        if pattern in path_str or path.name == pattern:
+        # Skip .git pattern since we handle it above
+        if pattern == ".git":
+            continue
+        elif pattern in path_str or path.name == pattern:
             return True
         # Handle glob patterns
-        if "*" in pattern and path.match(pattern):
+        elif "*" in pattern and path.match(pattern):
             return True
     return False
 
@@ -223,16 +243,29 @@ def process_text_content(content: str, filepath: Path) -> str:
             content
         )
     
-    # Handle shell scripts
-    elif filename.endswith('.sh'):
+    # Handle shell scripts and pre-commit hooks
+    elif filename.endswith('.sh') or filename == 'pre-commit':
+        # Replace user name in paths first
         content = re.sub(
             r'/home/klapaucius/',
             '/home/{{cookiecutter.user_name}}/',
             content
         )
+        
+        # For bash scripts, we need to escape ${# which Jinja2 interprets as comment start
+        # Replace ${# with {{ '${#' }} which outputs the literal string
+        if '${#' in content:
+            content = content.replace('${#', "{{ '${#' }}")
     
     # Handle README.md
     elif filename == "README.md":
+        # Remove the cookiecutter notice line (not needed in generated projects)
+        content = re.sub(
+            r'> \*\*📦 Using this as a Cookiecutter Template\?\*\* See \[COOKIECUTTER_README\.md\]\(COOKIECUTTER_README\.md\) for instructions on generating new projects from this template\.\n\n',
+            '',
+            content
+        )
+        
         # Replace project title
         content = re.sub(
             r'^# Template Project',
@@ -280,6 +313,13 @@ def process_text_content(content: str, filepath: Path) -> str:
         # Replace package imports
         content = re.sub(r'\btemplate_core\b', '{{cookiecutter.project_slug}}_core', content)
         content = re.sub(r'\btemplate_tools\b', '{{cookiecutter.project_slug}}_tools', content)
+    
+    # Handle GitHub Actions workflow files
+    elif filename.endswith('.yml') or filename.endswith('.yaml'):
+        # GitHub Actions uses ${{ }} syntax which conflicts with Jinja2
+        # Wrap entire content in raw blocks to prevent Jinja2 processing
+        if '${{' in content:
+            content = '{% raw %}' + content + '{% endraw %}'
     
     return content
 
