@@ -2,6 +2,8 @@
 
 A Python monorepo template with automated CI/CD workflows and development container support.
 
+> **📦 Using this as a Cookiecutter Template?** See [COOKIECUTTER_README.md](COOKIECUTTER_README.md) for instructions on generating new projects from this template.
+
 ## Contributing
 
 This project uses a DevContainer to provide a consistent, fully-configured development environment. All required tools and dependencies are automatically set up when you open the project in the container.
