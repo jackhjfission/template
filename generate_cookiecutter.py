@@ -431,6 +431,9 @@ Thumbs.db
 # Project specific
 prototyping/
 scratchpads/
+
+# user specific
+mypy.ini
 """
     
     gitignore_path = TEMPLATE_ROOT / ".gitignore"
