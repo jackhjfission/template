@@ -314,6 +314,20 @@ def process_text_content(content: str, filepath: Path) -> str:
         content = re.sub(r'\btemplate_core\b', '{{cookiecutter.project_slug}}_core', content)
         content = re.sub(r'\btemplate_tools\b', '{{cookiecutter.project_slug}}_tools', content)
     
+    # Handle .pre-commit-config.yaml files
+    elif filename == '.pre-commit-config.yaml':
+        # Replace hardcoded paths in mypy config-file arguments
+        content = re.sub(
+            r'--config-file=template_core/mypy\.ini',
+            '--config-file={{cookiecutter.project_slug}}_core/mypy.ini',
+            content
+        )
+        content = re.sub(
+            r'--config-file=template_tools/mypy\.ini',
+            '--config-file={{cookiecutter.project_slug}}_tools/mypy.ini',
+            content
+        )
+    
     # Handle GitHub Actions workflow files
     elif filename.endswith('.yml') or filename.endswith('.yaml'):
         # GitHub Actions uses ${{ }} syntax which conflicts with Jinja2
