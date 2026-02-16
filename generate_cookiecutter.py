@@ -414,9 +414,6 @@ env/
 htmlcov/
 *.log
 
-# Poetry
-poetry.lock
-
 # IDEs
 .vscode/
 .idea/
@@ -429,7 +426,6 @@ poetry.lock
 Thumbs.db
 
 # Project specific
-prototyping/
 scratchpads/
 
 # user specific
