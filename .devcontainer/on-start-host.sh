@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo copying git pre-commit hook script
-cp /home/klapaucius/workspace/.devcontainer/.pre-commit /home/klapaucius/workspace/.git/hooks/pre-commit
+cp /home/klapaucius/workspace/.devcontainer/pre-commit /home/klapaucius/workspace/.git/hooks/pre-commit
 
 # keep poetry envs up to date
 echo "Installing poetry environments..."
