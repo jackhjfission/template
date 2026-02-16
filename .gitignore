@@ -18,6 +18,8 @@ mypy.ini
 
 # environment files
 .env
+# except for the one required to make the devcontainer
+!.devcontainer/.env
 
 # Cookiecutter output
 cookiecutter-output/
